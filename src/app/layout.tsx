@@ -21,9 +21,9 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   applicationName: SITE_NAME,
   icons: {
-    icon: "/icons/favicon.png",
-    shortcut: "/icons/favicon.png",
-    apple: "/icons/favicon.png",
+    icon: "/icons/favicon-new.png",
+    shortcut: "/icons/favicon-new.png",
+    apple: "/icons/favicon-new.png",
   },
 };
 

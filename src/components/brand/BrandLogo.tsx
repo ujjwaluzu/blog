@@ -11,7 +11,7 @@ export default function BrandLogo({
 }: BrandLogoProps) {
   return (
     <Image
-      src="/icons/favicon.png"
+      src="/icons/favicon-new.png"
       alt="UJJWALUZU"
       width={1254}
       height={1254}
