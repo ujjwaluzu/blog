@@ -13,6 +13,19 @@
   --accent-foreground: #f7f3ed;
 }
 
+.dark {
+  color-scheme: dark;
+
+  --background: #161512;
+  --foreground: #f5f1e8;
+  --surface: #201e1a;
+  --muted: #29261f;
+  --muted-foreground: #a39c8d;
+  --border: #37332a;
+  --accent: #9db191;
+  --accent-foreground: #161512;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
