@@ -52,7 +52,7 @@ export default function SiteHeader() {
               rel="noopener noreferrer"
               className="text-[13px] tracking-[0.05em] text-muted-foreground transition-colors duration-200 hover:text-foreground"
             >
-              portfolio
+              Portfolio
             </a>
 
             <button

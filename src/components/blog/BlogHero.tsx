@@ -1,10 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
-import EditorialImage from "@/components/ui/EditorialImage";
 
 export default function BlogHero() {
   return (
     <section
-      className="border-b border-border py-[clamp(3.5rem,9vw,7rem)]"
+      className="border-b border-border pt-[clamp(0.5rem,1.5vw,1rem)] pb-[clamp(3.5rem,9vw,7rem)]"
       aria-label="Introduction"
     >
       <div className="page-container">
@@ -33,11 +33,14 @@ export default function BlogHero() {
             </div>
           </div>
           <div className="lg:col-span-5">
-            <EditorialImage
-              src="/ujjwal-character.webp"
-              alt="Ujjwal character illustration"
-              className="aspect-[4/3]"
+            <Image
+              src="/main-char.webp"
+              alt="Ujjwal main character illustration"
+              width={1024}
+              height={1536}
+              className="h-auto w-full"
               sizes="(max-width: 1024px) 100vw, 40vw"
+              priority
             />
           </div>
         </div>

@@ -27,7 +27,7 @@ export default function CategoryNavigation({
               >
                 <Link
                   href={`/categories/${category.slug}`}
-                  className="flex h-full min-h-44 flex-col justify-between p-7 lg:min-h-52 lg:p-8"
+                  className="flex h-full min-h-36 flex-col justify-between p-5 lg:min-h-40 lg:p-6"
                 >
                   <span className="eyebrow text-muted-foreground/70">
                     {String(index + 1).padStart(2, "0")}
