@@ -26,7 +26,7 @@ export async function generateMetadata(
   const searchParams = await props.searchParams;
   const page = parsePage(searchParams.page);
   const canonical = page > 1 ? `/writing?page=${page}` : "/writing";
-  const title = page > 1 ? `${WRITING_TITLE} — Page ${page}` : WRITING_TITLE;
+  const title = page > 1 ? `${WRITING_TITLE} - Page ${page}` : WRITING_TITLE;
 
   return {
     title,

@@ -25,7 +25,7 @@ export default function SiteHeader() {
         <div className="flex h-16 items-center justify-between gap-6 md:h-20">
           <Link
             href="/"
-            aria-label="UJJWALUZU — Home"
+            aria-label="UJJWALUZU - Home"
             className="flex items-center transition-opacity duration-200 hover:opacity-80"
           >
             <BrandLogo className="h-8 w-auto md:h-9" priority />

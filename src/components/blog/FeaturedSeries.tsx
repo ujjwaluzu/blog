@@ -9,7 +9,7 @@ export default function FeaturedSeries() {
         <div className="flex flex-wrap items-baseline justify-between gap-x-10 gap-y-4">
           <h2 className="eyebrow text-accent">BUILD LOGS</h2>
           <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
-            Follow the process behind the projects — from the first idea to the
+            Follow the process behind the projects, from the first idea to the
             final deployment.
           </p>
         </div>

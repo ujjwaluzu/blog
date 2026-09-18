@@ -20,9 +20,9 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
 });
 
 function formatDate(value: string | null) {
-  if (!value) return "—";
+  if (!value) return "-";
   const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? "—" : dateFormatter.format(date);
+  return Number.isNaN(date.getTime()) ? "-" : dateFormatter.format(date);
 }
 
 function ActionLinks({ post }: { post: AdminPostRow }) {
@@ -77,7 +77,7 @@ export default function PostList({ posts }: { posts: AdminPostRow[] }) {
               </p>
               <PostStatus status={post.status} />
               <p className="text-xs text-muted-foreground">
-                {post.featured ? "Featured" : "—"}
+                {post.featured ? "Featured" : "-"}
               </p>
               <p className="text-xs text-muted-foreground">
                 {formatDate(post.published_at)}
@@ -110,7 +110,7 @@ export default function PostList({ posts }: { posts: AdminPostRow[] }) {
                 </div>
                 <div className="flex items-center justify-between gap-4">
                   <dt className="text-muted-foreground">Featured</dt>
-                  <dd>{post.featured ? "Featured" : "—"}</dd>
+                  <dd>{post.featured ? "Featured" : "-"}</dd>
                 </div>
                 <div className="flex items-center justify-between gap-4">
                   <dt className="text-muted-foreground">Published</dt>

@@ -8,7 +8,7 @@ export const SITE_AUTHOR_NAME = "Ujjwal Baunthiyal";
 
 export const SITE_AUTHOR_URL = `${SITE_URL}/`;
 
-export const SITE_TITLE = "Ujjwaluzu — Ujjwal Baunthiyal's Blog";
+export const SITE_TITLE = "Ujjwaluzu - Ujjwal Baunthiyal's Blog";
 
 export const SITE_DESCRIPTION =
   "Ujjwal Baunthiyal's blog about development, projects, technology, learning, and things worth building and sharing.";
@@ -17,7 +17,7 @@ export const SITE_OG_IMAGE = {
   url: "/main-char.webp",
   width: 1024,
   height: 1536,
-  alt: "Ujjwaluzu — Ujjwal Baunthiyal's blog",
+  alt: "Ujjwaluzu - Ujjwal Baunthiyal's blog",
 } as const;
 
 export function absoluteUrl(path = "/"): string {
