@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Geist } from "next/font/google";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo/site";
 import "./globals.css";
 
 const display = Fraunces({
@@ -14,11 +15,15 @@ const sans = Geist({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://blog.ujjwaluzu.in"
-  ),
-  title: "Ujjwal Uzu",
-  description: "Personal developer blog",
+  metadataBase: new URL(SITE_URL),
+  title: SITE_NAME,
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  icons: {
+    icon: "/icons/favicon.png",
+    shortcut: "/icons/favicon.png",
+    apple: "/icons/favicon.png",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

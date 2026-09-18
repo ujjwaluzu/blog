@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import PostCover from "@/components/blog/PostCover";
 import { formatPublishedDate } from "@/lib/blog/format";
 import type { PublicPost } from "@/lib/blog/queries";
@@ -8,14 +9,21 @@ export default function LatestPosts({
   error = false,
   heading = "LATEST ARTICLES",
   viewAllHref,
+  pagination,
+  className = "section-space",
 }: {
   posts: PublicPost[];
   error?: boolean;
   heading?: string;
   viewAllHref?: string;
+  pagination?: ReactNode;
+  className?: string;
 }) {
   return (
-    <section className="section-space border-b border-border" aria-label="Latest articles">
+    <section
+      className={`${className} border-b border-border`}
+      aria-label="Latest articles"
+    >
       <div className="page-container">
         <h2 className="eyebrow text-accent">{heading}</h2>
         {posts.length === 0 ? (
@@ -63,6 +71,8 @@ export default function LatestPosts({
             ))}
           </div>
         )}
+
+        {pagination}
 
         {viewAllHref && posts.length > 0 ? (
           <div className="mt-14 flex justify-center">

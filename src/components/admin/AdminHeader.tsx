@@ -1,4 +1,5 @@
 import { logout } from "@/lib/auth/actions";
+import BrandLogo from "@/components/brand/BrandLogo";
 
 export default function AdminHeader() {
   return (
@@ -6,9 +7,7 @@ export default function AdminHeader() {
       <p className="eyebrow text-muted-foreground">Admin</p>
 
       <div className="flex items-center gap-4">
-        <span className="font-display text-sm font-medium tracking-[0.22em]">
-          UJJWALUZU
-        </span>
+        <BrandLogo className="h-7 w-auto" />
         <form action={logout}>
           <button
             type="submit"

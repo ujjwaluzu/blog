@@ -25,6 +25,7 @@ export type PublicPost = {
   featured: boolean;
   publishedAt: string | null;
   createdAt: string;
+  updatedAt: string | null;
   readTime: string;
   category: PublicCategory | null;
   tags: PublicTag[];
@@ -51,6 +52,7 @@ type RawPost = {
   featured: boolean;
   published_at: string | null;
   created_at: string;
+  updated_at: string | null;
   categories: RawCategory | RawCategory[] | null;
   post_tags: RawPostTag[] | null;
 };
@@ -58,10 +60,10 @@ type RawPost = {
 type RawTaxonomy = PublicCategory;
 
 const POST_SELECT =
-  "id, title, slug, excerpt, content, cover_image, featured, published_at, created_at, categories(id, name, slug), post_tags(tags(id, name, slug))";
+  "id, title, slug, excerpt, content, cover_image, featured, published_at, created_at, updated_at, categories(id, name, slug), post_tags(tags(id, name, slug))";
 
 const TAG_FILTER_POST_SELECT =
-  "id, title, slug, excerpt, content, cover_image, featured, published_at, created_at, categories(id, name, slug), post_tags!inner(tags!inner(id, name, slug))";
+  "id, title, slug, excerpt, content, cover_image, featured, published_at, created_at, updated_at, categories(id, name, slug), post_tags!inner(tags!inner(id, name, slug))";
 
 function queryError(label: string, error: { message?: string } | null) {
   const message = error?.message ?? "Unknown database error";
@@ -95,6 +97,7 @@ function toPublicPost(row: RawPost): PublicPost {
     featured: row.featured,
     publishedAt: row.published_at,
     createdAt: row.created_at,
+    updatedAt: row.updated_at ?? null,
     readTime: estimateReadTime(row.content),
     category,
     tags,
@@ -130,6 +133,43 @@ export async function getPublishedPosts(): Promise<BlogQueryResult<PublicPost[]>
       .order("published_at", { ascending: false, nullsFirst: false })
       .order("created_at", { ascending: false })
   );
+}
+
+export type PublicPostSitemapEntry = {
+  slug: string;
+  publishedAt: string | null;
+  updatedAt: string | null;
+};
+
+export async function getPublishedSitemapEntries(): Promise<
+  BlogQueryResult<PublicPostSitemapEntry[]>
+> {
+  const supabase = createPublicClient();
+  const { data, error } = await supabase
+    .from("posts")
+    .select("slug, published_at, updated_at")
+    .eq("status", "published")
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    return { data: [], error: queryError("published sitemap posts", error) };
+  }
+
+  const rows = (data ?? []) as unknown as {
+    slug: string;
+    published_at: string | null;
+    updated_at: string | null;
+  }[];
+
+  return {
+    data: rows.map((row) => ({
+      slug: row.slug,
+      publishedAt: row.published_at,
+      updatedAt: row.updated_at,
+    })),
+    error: null,
+  };
 }
 
 export const getPublishedPostBySlug = cache(
@@ -188,6 +228,62 @@ export async function getLatestPublishedPosts(
       .order("created_at", { ascending: false })
       .limit(Math.max(1, Math.floor(limit)))
   );
+}
+
+export type PaginatedPosts = {
+  posts: PublicPost[];
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
+};
+
+export async function getPublishedPostsPage(
+  page = 1,
+  pageSize = 9
+): Promise<BlogQueryResult<PaginatedPosts>> {
+  const size = Math.max(1, Math.floor(pageSize));
+  const supabase = createPublicClient();
+
+  const { count, error: countError } = await supabase
+    .from("posts")
+    .select("id", { count: "exact", head: true })
+    .eq("status", "published");
+
+  if (countError) {
+    return {
+      data: { posts: [], page: 1, pageSize: size, total: 0, totalPages: 0 },
+      error: queryError("published posts count", countError),
+    };
+  }
+
+  const total = count ?? 0;
+  const totalPages = Math.ceil(total / size);
+  const current = totalPages === 0 ? 1 : Math.min(Math.max(1, Math.floor(page)), totalPages);
+  const from = (current - 1) * size;
+  const to = from + size - 1;
+
+  const result = await fetchPosts(
+    "published posts page",
+    supabase
+      .from("posts")
+      .select(POST_SELECT)
+      .eq("status", "published")
+      .order("published_at", { ascending: false, nullsFirst: false })
+      .order("created_at", { ascending: false })
+      .range(from, to)
+  );
+
+  return {
+    data: {
+      posts: result.data,
+      page: current,
+      pageSize: size,
+      total,
+      totalPages,
+    },
+    error: result.error,
+  };
 }
 
 export async function getPublishedArticleTopics(): Promise<
@@ -265,7 +361,7 @@ export async function getPublishedPostsByCategory(
     supabase
       .from("posts")
       .select(
-        "id, title, slug, excerpt, content, cover_image, featured, published_at, created_at, categories!inner(id, name, slug), post_tags(tags(id, name, slug))"
+        "id, title, slug, excerpt, content, cover_image, featured, published_at, created_at, updated_at, categories!inner(id, name, slug), post_tags(tags(id, name, slug))"
       )
       .eq("status", "published")
       .eq("categories.slug", categorySlug)

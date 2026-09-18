@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { login } from "@/lib/auth/actions";
 import SubmitButton from "@/components/admin/SubmitButton";
+import BrandLogo from "@/components/brand/BrandLogo";
 
 export default async function AdminLoginPage(
   props: PageProps<"/admin/login">
@@ -11,7 +12,7 @@ export default async function AdminLoginPage(
   return (
     <main className="flex min-h-screen items-center justify-center px-6">
       <div className="w-full max-w-sm">
-        <p className="eyebrow text-muted-foreground">UJJWALUZU</p>
+        <BrandLogo className="h-10 w-auto" />
         <h1 className="mt-3 font-display text-3xl">Admin</h1>
 
         <form action={login} className="mt-12 space-y-8">

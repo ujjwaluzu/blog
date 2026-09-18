@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
+import BrandLogo from "@/components/brand/BrandLogo";
 
 type NavItem = {
   label: string;
@@ -111,9 +112,7 @@ export default function AdminSidebar() {
               </svg>
             )}
           </button>
-          <span className="font-display text-sm font-medium tracking-[0.22em]">
-            UJJWALUZU
-          </span>
+          <BrandLogo className="h-7 w-auto" />
         </div>
 
         {open && (
@@ -147,9 +146,7 @@ export default function AdminSidebar() {
 
       <aside className="hidden lg:sticky lg:top-0 lg:flex lg:h-dvh lg:w-64 lg:shrink-0 lg:flex-col lg:border-r lg:border-border">
         <div className="px-5 pb-4 pt-8">
-          <p className="font-display text-sm font-medium tracking-[0.22em]">
-            UJJWALUZU
-          </p>
+          <BrandLogo className="h-8 w-auto" />
           <p className="eyebrow mt-1.5 text-muted-foreground">Admin</p>
         </div>
 

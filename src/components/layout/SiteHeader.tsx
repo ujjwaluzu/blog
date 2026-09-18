@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import BrandLogo from "@/components/brand/BrandLogo";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -25,9 +26,9 @@ export default function SiteHeader() {
           <Link
             href="/"
             aria-label="UJJWALUZU — Home"
-            className="font-display text-sm font-medium tracking-[0.22em] text-foreground transition-colors duration-200 hover:text-accent md:text-[15px]"
+            className="flex items-center transition-opacity duration-200 hover:opacity-80"
           >
-            UJJWALUZU
+            <BrandLogo className="h-8 w-auto md:h-9" priority />
           </Link>
 
           <nav

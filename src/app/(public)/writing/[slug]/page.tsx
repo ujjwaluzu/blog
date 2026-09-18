@@ -2,8 +2,17 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import MarkdownContent from "@/components/blog/MarkdownContent";
 import PostCover from "@/components/blog/PostCover";
+import JsonLd from "@/components/seo/JsonLd";
 import { formatPublishedDate } from "@/lib/blog/format";
 import { getPublishedPostBySlug } from "@/lib/blog/queries";
+import {
+  SITE_AUTHOR_NAME,
+  SITE_AUTHOR_URL,
+  SITE_NAME,
+  SITE_OG_IMAGE,
+  absoluteUrl,
+  deriveDescription,
+} from "@/lib/seo/site";
 
 type PostPageProps = PageProps<"/writing/[slug]">;
 
@@ -14,30 +23,46 @@ export async function generateMetadata({
   const result = await getPublishedPostBySlug(slug);
 
   if (result.error || !result.data) {
-    return { title: "Writing | Ujjwal Uzu" };
+    return { title: "Writing" };
   }
 
   const post = result.data;
-  const description = post.excerpt ?? "A note from Ujjwal Uzu.";
+  const description = deriveDescription(post.excerpt, post.content);
   const canonical = `/writing/${post.slug}`;
+  const keywords = [
+    post.category?.name,
+    ...post.tags.map((tag) => tag.name),
+  ].filter((value): value is string => Boolean(value));
 
   return {
-    title: `${post.title} | Ujjwal Uzu`,
+    title: post.title,
     description,
+    authors: [{ name: SITE_AUTHOR_NAME, url: SITE_AUTHOR_URL }],
+    creator: SITE_AUTHOR_NAME,
+    publisher: SITE_NAME,
     alternates: { canonical },
+    ...(keywords.length > 0 ? { keywords } : {}),
+    robots: { index: true, follow: true },
     openGraph: {
       type: "article",
       url: canonical,
+      siteName: SITE_NAME,
       title: post.title,
       description,
       publishedTime: post.publishedAt ?? undefined,
-      images: post.coverImageUrl ? [post.coverImageUrl] : undefined,
+      modifiedTime: post.updatedAt ?? post.publishedAt ?? undefined,
+      authors: [SITE_AUTHOR_URL],
+      section: post.category?.name ?? undefined,
+      tags: post.tags.map((tag) => tag.name),
+      images: post.coverImageUrl
+        ? [{ url: post.coverImageUrl, alt: `${post.title} cover` }]
+        : [{ ...SITE_OG_IMAGE }],
     },
     twitter: {
-      card: post.coverImageUrl ? "summary_large_image" : "summary",
+      card: "summary_large_image",
       title: post.title,
       description,
-      images: post.coverImageUrl ? [post.coverImageUrl] : undefined,
+      images: [post.coverImageUrl ?? SITE_OG_IMAGE.url],
     },
   };
 }
@@ -54,9 +79,35 @@ export default async function WritingPostPage({
   if (!result.data) notFound();
 
   const post = result.data;
+  const description = deriveDescription(post.excerpt, post.content);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description,
+    image: [post.coverImageUrl ?? absoluteUrl(SITE_OG_IMAGE.url)],
+    datePublished: post.publishedAt ?? undefined,
+    dateModified: post.updatedAt ?? post.publishedAt ?? undefined,
+    author: {
+      "@type": "Person",
+      name: SITE_AUTHOR_NAME,
+      url: SITE_AUTHOR_URL,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_AUTHOR_URL,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": absoluteUrl(`/writing/${post.slug}`),
+    },
+    ...(post.category ? { articleSection: post.category.name } : {}),
+  };
 
   return (
     <main>
+      <JsonLd data={jsonLd} />
       <article>
         <header className="border-b border-border py-[clamp(5rem,10vw,8rem)]">
           <div className="page-container max-w-4xl">

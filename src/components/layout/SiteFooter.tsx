@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BrandLogo from "@/components/brand/BrandLogo";
 
 const FOOTER_LINKS = [
   { label: "Home", href: "/" },
@@ -14,17 +15,15 @@ export default function SiteFooter() {
   return (
     <footer className="border-t border-border">
       <div className="page-container">
-        <div className="grid gap-x-12 gap-y-14 py-16 sm:grid-cols-2 lg:grid-cols-12 lg:py-20">
-          <div className="sm:col-span-2 lg:col-span-5">
-            <p className="font-display text-base font-medium tracking-[0.22em] text-foreground">
-              UJJWALUZU
-            </p>
+        <div className="grid gap-x-12 gap-y-10 py-10 sm:grid-cols-2 lg:grid-cols-12 lg:py-12">
+          <div className="sm:col-span-2 lg:col-span-5 lg:pr-20">
+            <BrandLogo className="h-9 w-auto" />
             <p className="eyebrow mt-4 text-muted-foreground">
               THOUGHTS. CODE. PROGRESS.
             </p>
           </div>
 
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 lg:col-start-8">
             <p className="eyebrow text-accent">NAVIGATION</p>
             <ul className="mt-6">
               {FOOTER_LINKS.map((link) => (
@@ -40,7 +39,7 @@ export default function SiteFooter() {
             </ul>
           </div>
 
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 lg:col-start-11">
             <p className="eyebrow text-accent">SOCIAL</p>
             <ul className="mt-6">
               {SOCIAL_LINKS.map((link) => (
