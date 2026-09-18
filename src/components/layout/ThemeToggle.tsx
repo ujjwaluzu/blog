@@ -1,14 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useSyncExternalStore } from "react";
+
+const THEME_STORAGE_KEY = "theme";
+
+function subscribe(callback: () => void) {
+  window.addEventListener("storage", callback);
+  return () => window.removeEventListener("storage", callback);
+}
+
+function getSnapshot() {
+  return document.documentElement.classList.contains("dark");
+}
+
+function getServerSnapshot() {
+  return false;
+}
+
+function toggleTheme() {
+  const next = !getSnapshot();
+  document.documentElement.classList.toggle("dark", next);
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, next ? "dark" : "light");
+  } catch {
+    // storage unavailable
+  }
+}
 
 export default function ThemeToggle() {
-  const [isDark, setIsDark] = useState(false);
+  const isDark = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
 
   return (
     <button
       type="button"
-      onClick={() => setIsDark((dark) => !dark)}
+      onClick={toggleTheme}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       className="fixed bottom-6 right-6 z-50 flex size-11 items-center justify-center rounded-full border border-border bg-surface text-foreground shadow-sm transition-colors duration-200 hover:border-foreground hover:text-accent"
     >
