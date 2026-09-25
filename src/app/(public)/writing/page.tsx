@@ -73,10 +73,10 @@ export default async function WritingPage(props: PageProps<"/writing">) {
               <Image
                 src="/writing-main-hero.webp"
                 alt="Writing illustration"
-                width={1448}
-                height={1086}
-                className="h-auto w-full"
-                sizes="(max-width: 1024px) 100vw, 40vw"
+                width={1024}
+                height={1536}
+                className="mx-auto h-auto w-full max-w-[20rem] lg:mx-0"
+                sizes="(max-width: 320px) 100vw, 320px"
                 priority
               />
             </div>
