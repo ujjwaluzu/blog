@@ -62,9 +62,23 @@ export default function SiteFooter() {
           <p className="text-xs tracking-[0.15em] text-muted-foreground">
             © 2026 UJJWALUZU
           </p>
-          <p className="eyebrow text-muted-foreground/70">
-            IDEAS INTO PROGRESS
-          </p>
+          <nav aria-label="External sites" className="flex flex-wrap items-center gap-5">
+            {[
+              { label: "Portfolio", href: "https://ujjwaluzu.in" },
+              { label: "Tools", href: "https://tools.ujjwaluzu.in" },
+              { label: "Status", href: "https://status.ujjwaluzu.in" },
+            ].map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="eyebrow text-muted-foreground/70 transition-colors duration-200 hover:text-foreground"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
         </div>
       </div>
     </footer>
